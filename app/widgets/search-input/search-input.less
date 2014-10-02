@@ -1,0 +1,61 @@
+@input-padding-left: 25px;
+@input-padding-right: 10px;
+@border-radius: 14px;
+
+search-input {
+  display: block;
+  border-radius: @border-radius;
+  border: 0px;
+  font-size: @default-font-size;
+
+  div {
+    display: flex;
+    display: -webkit-flex;
+    border-radius: inherit;
+
+    input {
+      background-image: url("../widgets/search-input/magnifier.svg");
+      background-position: 3px center;
+      background-repeat: no-repeat;
+
+      border-width: 0px;
+      border-radius: inherit;
+      padding-left: @input-padding-left;
+      padding-right: @input-padding-right;
+      font-size: inherit;
+
+      flex-grow: 1;
+      -webkit-flex-grow: 1;
+    }
+  }
+
+  ul {
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 5px;
+
+    color: @default-text-color;
+    font-size: @default-font-size;
+    background-color: #FFFFFF;
+    border: 1px solid @default-border-color;
+
+    list-style: none;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    li {
+      cursor: pointer;
+      padding: 10px;
+      p {
+        padding: 0px;
+        margin: 0px;
+      }
+
+      &:hover {
+        background-color: @default-hover-color;
+      }
+    }
+  }
+}

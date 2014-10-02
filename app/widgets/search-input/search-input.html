@@ -1,0 +1,7 @@
+<div><input placeholder="Suche"></input><spinner></spinner></div>
+<ul ng-if="listItems && listItems.length > 0">
+  <li ng-repeat="listItem in listItems">
+    <p class='title' ng-bind="listItem.title"></p>
+    <p class='subtitle' mathjax-bind="listItem.quickinfo"></p>
+  </li>
+</ul>
