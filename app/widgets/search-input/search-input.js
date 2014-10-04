@@ -1,30 +1,39 @@
 /*jslint indent: 2, unparam: true */
 /*global angular, console */
 
-angular.module('angular-widgets').directive('searchInput', [function () {
+angular.module('angular-widgets').directive('searchInput', ['$http', '$resource', function ($http, $resource) {
   'use strict';
 
   return {
     restrict: 'E',
     templateUrl: 'search-input.html',
     scope: {
+      quicksearchUrl: '@',
       onFocus: '=',
       onBlur: '='
     },
     link: function ($scope, $element) {
       var input = $element.find('input'),
-        spinner = $element.find('spinner');
+        spinner = $element.find('spinner'),
+        restResource;
+
+      restResource = $resource($scope.quicksearchUrl,
+        null,
+        {
+          query: {
+            method: 'GET',
+            params: { pattern: '@pattern' },
+            isArray: true
+          }
+        });
 
       function showQuickSearchResults() {
-        var val = input.val();
+        var val = input.val(),
+          searchResult;
 
-        console.log('Hallo', val);
-        console.log('Spinner', spinner);
-          //searchResult;
-/*
         if (val.length > 0) {
           spinner.css('display', 'flex');
-          //searchResult = QuickSearch.query({ pattern: val });
+          searchResult = restResource.query({ pattern: val });
           searchResult.$promise.then(function (result) {
             $scope.listItems = result;
           }).catch(function () {
@@ -36,7 +45,7 @@ angular.module('angular-widgets').directive('searchInput', [function () {
           $scope.$apply(function () {
             $scope.listItems = undefined;
           });
-        }*/
+        }
       }
 
       function onBlur() {

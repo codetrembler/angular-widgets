@@ -7,7 +7,8 @@
   "description": "ui widgets implemented as angular directives",
   "main": "angluar-widgets.min.js",
   "dependencies": {
-    "angular": "~1.2.6"
+    "angular": "~1.2.6",
+    "angular-resource": "~1.2.26"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.10",
