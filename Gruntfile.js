@@ -21,7 +21,7 @@ module.exports = function (grunt) {
           paths: ["styles"],
           beautify: true,
           compress: false,
-          cleancss: true
+          cleancss: false
         },
         files: {
           'dist/angular-widgets.src.css': ['app/styles/main.less']
@@ -74,7 +74,8 @@ module.exports = function (grunt) {
           "dist/angular-widgets.min.js": [
             "temp/widget-templates.js",
             "app/app.js",
-            "app/widgets/**/*.js"
+            "app/widgets/**/*.js",
+            "!app/widgets/**/*.spec.js"
           ]
         }
       },
@@ -88,7 +89,8 @@ module.exports = function (grunt) {
           "dist/angular-widgets.src.js": [
             "temp/widget-templates.src.js",
             "app/app.js",
-            "app/widgets/**/*.js"
+            "app/widgets/**/*.js",
+            "!app/widgets/**/*.spec.js"
           ]
         }
       }
@@ -171,7 +173,6 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-jslint');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
