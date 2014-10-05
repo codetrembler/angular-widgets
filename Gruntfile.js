@@ -13,7 +13,7 @@ module.exports = function (grunt) {
           cleancss: true
         },
         files: {
-          'dist/angular-widgets.min.css': ['app/styles/main.less']
+          'angular-widgets.min.css': ['app/styles/main.less']
         }
       },
       src: {
@@ -24,7 +24,7 @@ module.exports = function (grunt) {
           cleancss: false
         },
         files: {
-          'dist/angular-widgets.src.css': ['app/styles/main.less']
+          'angular-widgets.src.css': ['app/styles/main.less']
         }
       }
     },
@@ -71,7 +71,7 @@ module.exports = function (grunt) {
     uglify: {
       dist: {
         files: {
-          "dist/angular-widgets.min.js": [
+          "angular-widgets.min.js": [
             "temp/widget-templates.js",
             "app/app.js",
             "app/widgets/**/*.js",
@@ -86,7 +86,7 @@ module.exports = function (grunt) {
           beautify: true
         },
         files: {
-          "dist/angular-widgets.src.js": [
+          "angular-widgets.src.js": [
             "temp/widget-templates.src.js",
             "app/app.js",
             "app/widgets/**/*.js",
@@ -103,7 +103,7 @@ module.exports = function (grunt) {
     'string-replace': {
       styles: {
         files: {
-          'dist/angular-widgets.min.css': 'dist/angular-widgets.min.css'
+          'angular-widgets.min.css': 'angular-widgets.min.css'
         },
         options: {
           replacements: [{
@@ -115,7 +115,7 @@ module.exports = function (grunt) {
       },
       dist: {
         files: {
-          'dist/angular-widgets.min.js': 'dist/angular-widgets.min.js'
+          'angular-widgets.min.js': 'angular-widgets.min.js'
         },
         options: {
           replacements: [{
@@ -126,7 +126,7 @@ module.exports = function (grunt) {
       },
       src: {
         files: {
-          'dist/angular-widgets.src.js': 'dist/angular-widgets.src.js'
+          'angular-widgets.src.js': 'angular-widgets.src.js'
         },
         options: {
           replacements: [{
@@ -144,13 +144,13 @@ module.exports = function (grunt) {
             expand: true,
             cwd: 'app/widgets/search-input',
             src: 'magnifier.svg',
-            dest: 'dist/resources/'
+            dest: 'resources/'
           }
         ]
       }
     },
 
-    clean: ['dist/*'],
+    clean: ['angular-widgets*.js', 'angular-widgets*.css', 'resoures/'],
 
     karma: {
       unit: {

@@ -26,8 +26,5 @@
   },
   "scripts": {
     "test": "grunt travis --verbose"
-  },
-  "files": [
-    "dist"
-  ]
+  }
 }
