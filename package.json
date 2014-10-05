@@ -24,5 +24,8 @@
     "karma-ng-html2js-preprocessor": "^0.1.0",
     "karma-phantomjs-launcher": "*",
     "karma-script-launcher": "*"
+  },
+  "scripts": {
+    "test": "grunt travis --verbose"
   }
 }

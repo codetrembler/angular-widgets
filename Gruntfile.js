@@ -186,4 +186,5 @@ module.exports = function (grunt) {
   grunt.registerTask('src', ['jslint', 'karma', 'copy:all', 'htmlmin:src', 'html2js:src', 'less:src', 'uglify:src', 'string-replace:src']);
 
   grunt.registerTask('default', ['clean', 'dist', 'src']);
+  grunt.registerTask('travis', ['clean', 'dist', 'src']);
 };
