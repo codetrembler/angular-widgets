@@ -44,7 +44,7 @@ search-input ul li p {
   margin: 0px;
 }
 search-input ul li:hover {
-  background-color: #808080;
+  background-color: #d3d3d3;
 }
 spinner {
   display: block;

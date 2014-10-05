@@ -123,8 +123,8 @@ module.exports = function (grunt) {
         },
         options: {
           replacements: [{
-            pattern: 'angular.module("angular-widgets",[])',
-            replacement: 'angular.module("angular-widgets",["templates-dist"])'
+            pattern: 'angular.module("angular-widgets",["ngResource"])',
+            replacement: 'angular.module("angular-widgets",["templates-dist", "ngResource"])'
           }]
         }
       },
@@ -134,8 +134,8 @@ module.exports = function (grunt) {
         },
         options: {
           replacements: [{
-            pattern: 'angular.module("angular-widgets", [])',
-            replacement: 'angular.module("angular-widgets",["templates-src"])'
+            pattern: 'angular.module("angular-widgets", ["ngResource"])',
+            replacement: 'angular.module("angular-widgets",["ngResource", "templates-src"])'
           }]
         }
       }

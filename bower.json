@@ -16,6 +16,8 @@
   },
   "ignore": [
     "app",
+    ".gitignore",
+    ".travis.yml",
     "bower.json",
     "Gruntfile.js",
     "karma.conf.js",

@@ -1,2 +1,2 @@
 /*global angular */
-angular.module('angular-widgets', ['ngResource']);
+angular.module('angular-widgets', ["ngResource"]);
