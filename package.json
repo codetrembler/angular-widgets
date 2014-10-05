@@ -20,7 +20,7 @@
     "karma": "*",
     "karma-chrome-launcher": "*",
     "karma-firefox-launcher": "*",
-    "karma-jasmine": "*",
+    "karma-jasmine": "^0.2.2",
     "karma-ng-html2js-preprocessor": "^0.1.0",
     "karma-phantomjs-launcher": "*",
     "karma-script-launcher": "*"
