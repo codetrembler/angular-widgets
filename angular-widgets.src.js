@@ -1,33 +1,14 @@
-angular.module("templates-src", [ "search-input.html" ]);
+angular.module("templates-src", [ "search-input.html", "spinner.html" ]);
 
 angular.module("search-input.html", []).run([ "$templateCache", function($templateCache) {
     $templateCache.put("search-input.html", '<div><input placeholder="Suche"><spinner></spinner></div>\n' + '<ul ng-if="listItems && listItems.length > 0">\n' + '  <li ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </li>\n" + "</ul>");
 } ]);
 
-angular.module("angular-widgets", [ "ngResource" ]);
+angular.module("spinner.html", []).run([ "$templateCache", function($templateCache) {
+    $templateCache.put("spinner.html", "<div>\n" + '  <div class="bounce1"></div>\n' + '  <div class="bounce2"></div>\n' + '  <div class="bounce3"></div>\n' + "</div>");
+} ]);
 
-angular.module("angular-widgets", [ "ngResource", "ngMockE2E" ]).run(function($httpBackend) {
-    "use strict";
-    $httpBackend.whenGET("search-input.html").passThrough();
-    $httpBackend.whenGET(/quicksearch\/(.*)/).respond(function(method, url) {
-        var ret, pattern;
-        pattern = url.substring(url.lastIndexOf("/") + 1);
-        ret = [ {
-            id: "qr1",
-            title: pattern,
-            quickinfo: "Additional info 1"
-        }, {
-            id: "qr2",
-            title: "Quick Result 2",
-            quickinfo: "Additional info 2"
-        }, {
-            id: "qr3",
-            title: "Quick Result 3",
-            quickinfo: "Additional info 3"
-        } ];
-        return [ 200, ret, {} ];
-    });
-});
+angular.module("angular-widgets", [ "ngResource" ]);
 
 angular.module("angular-widgets").directive("searchInput", [ "$resource", function($resource) {
     "use strict";
@@ -96,11 +77,6 @@ angular.module("angular-widgets").directive("searchInput", [ "$resource", functi
         }
     };
 } ]);
-
-angular.module("angular-widgets", [ "ngMockE2E" ]).run(function($httpBackend) {
-    "use strict";
-    $httpBackend.whenGET("spinner.html").passThrough();
-});
 
 angular.module("angular-widgets").directive("spinner", [ function() {
     "use strict";

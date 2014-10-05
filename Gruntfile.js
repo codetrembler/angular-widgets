@@ -48,7 +48,7 @@ module.exports = function (grunt) {
         },
         files: {
           'temp/widgets.src/search-input.html': 'app/widgets/search-input/search-input.html',
-          'temp/widgets/spinner.html': 'app/widgets/spinner/spinner.html'
+          'temp/widgets.src/spinner.html': 'app/widgets/spinner/spinner.html'
         }
       }
     },
@@ -58,14 +58,14 @@ module.exports = function (grunt) {
         options: {
           base: 'temp/widgets'
         },
-        src: ['temp/widgets/**/*.html'],
+        src: ['temp/widgets/**/*.html', '!temp/widgets/**/example.html'],
         dest: 'temp/widget-templates.js'
       },
       src: {
         options: {
           base: 'temp/widgets.src'
         },
-        src: ['temp/widgets.src/**/*.html'],
+        src: ['temp/widgets.src/**/*.html', '!temp/widgets/**/example.html'],
         dest: 'temp/widget-templates.src.js'
       }
     },
@@ -77,6 +77,7 @@ module.exports = function (grunt) {
             "temp/widget-templates.js",
             "app/app.js",
             "app/widgets/**/*.js",
+            "!app/widgets/**/example.js",
             "!app/widgets/**/*.spec.js"
           ]
         }
@@ -92,6 +93,7 @@ module.exports = function (grunt) {
             "temp/widget-templates.src.js",
             "app/app.js",
             "app/widgets/**/*.js",
+            "!app/widgets/**/example.js",
             "!app/widgets/**/*.spec.js"
           ]
         }
