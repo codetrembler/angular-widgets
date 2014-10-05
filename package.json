@@ -26,6 +26,6 @@
     "karma-script-launcher": "*"
   },
   "scripts": {
-    "test": "grunt travis --verbose"
+    "test": "grunt travis"
   }
 }
