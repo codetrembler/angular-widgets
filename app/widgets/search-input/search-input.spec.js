@@ -13,6 +13,7 @@ describe('searchInput', function () {
     $scope;
 
   beforeEach(angular.mock.module('angular-widgets'));
+  beforeEach(angular.mock.module('spinner.html'));
   beforeEach(angular.mock.module('search-input.html'));
 
   beforeEach(inject(function ($rootScope, $compile, _$httpBackend_) {

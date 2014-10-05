@@ -36,7 +36,8 @@ module.exports = function (grunt) {
           collapseWhitespace: true
         },
         files: {
-          'temp/widgets/search-input.html': 'app/widgets/search-input/search-input.html'
+          'temp/widgets/search-input.html': 'app/widgets/search-input/search-input.html',
+          'temp/widgets/spinner.html': 'app/widgets/spinner/spinner.html'
         }
       },
       src: {
@@ -46,7 +47,8 @@ module.exports = function (grunt) {
           beautify: true
         },
         files: {
-          'temp/widgets.src/search-input.html': 'app/widgets/search-input/search-input.html'
+          'temp/widgets.src/search-input.html': 'app/widgets/search-input/search-input.html',
+          'temp/widgets/spinner.html': 'app/widgets/spinner/spinner.html'
         }
       }
     },

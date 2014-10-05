@@ -4,7 +4,7 @@ angular.module("search-input.html", []).run([ "$templateCache", function($templa
     $templateCache.put("search-input.html", '<div><input placeholder="Suche"><spinner></spinner></div>\n' + '<ul ng-if="listItems && listItems.length > 0">\n' + '  <li ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </li>\n" + "</ul>");
 } ]);
 
-angular.module("angular-widgets",["templates-src"]);
+angular.module("angular-widgets", [ "ngResource" ]);
 
 angular.module("angular-widgets", [ "ngResource", "ngMockE2E" ]).run(function($httpBackend) {
     "use strict";
@@ -94,5 +94,18 @@ angular.module("angular-widgets").directive("searchInput", [ "$resource", functi
                 input.on("blur", onBlur);
             }
         }
+    };
+} ]);
+
+angular.module("angular-widgets", [ "ngMockE2E" ]).run(function($httpBackend) {
+    "use strict";
+    $httpBackend.whenGET("spinner.html").passThrough();
+});
+
+angular.module("angular-widgets").directive("spinner", [ function() {
+    "use strict";
+    return {
+        restrict: "E",
+        templateUrl: "spinner.html"
     };
 } ]);
