@@ -150,16 +150,15 @@ module.exports = function (grunt) {
 
     clean: ['dist/*'],
 
-/*
     karma: {
       unit: {
         configFile: 'karma.conf.js',
         singleRun: true,
         autoWatch: false,
-        browsers: ['PhantomJS']
+        browsers: ['Chrome', 'PhantomJS']
       }
-    },
-*/
+    }
+
 //    watch: {
 //      scripts: {
 //        files: ['app/scripts/**', 'app/styles/**', 'app/*.html', 'app/templates/*.html'],
@@ -183,8 +182,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-html2js');
 
-  grunt.registerTask('dist', ['jslint', /*'karma',*/ 'copy:all', 'htmlmin:dist', 'html2js:dist', 'less:dist', 'uglify:dist', 'string-replace:styles', 'string-replace:dist']);
-  grunt.registerTask('src', ['jslint', /*'karma',*/ 'copy:all', 'htmlmin:src', 'html2js:src', 'less:src', 'uglify:src', 'string-replace:src']);
+  grunt.registerTask('dist', ['jslint', 'karma', 'copy:all', 'htmlmin:dist', 'html2js:dist', 'less:dist', 'uglify:dist', 'string-replace:styles', 'string-replace:dist']);
+  grunt.registerTask('src', ['jslint', 'karma', 'copy:all', 'htmlmin:src', 'html2js:src', 'less:src', 'uglify:src', 'string-replace:src']);
 
   grunt.registerTask('default', ['clean', 'dist', 'src']);
 };

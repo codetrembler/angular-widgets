@@ -1,7 +1,7 @@
 /*jslint indent: 2, unparam: true */
 /*global angular, console */
 
-angular.module('angular-widgets').directive('searchInput', ['$http', '$resource', function ($http, $resource) {
+angular.module('angular-widgets').directive('searchInput', ['$resource', function ($resource) {
   'use strict';
 
   return {
@@ -17,15 +17,17 @@ angular.module('angular-widgets').directive('searchInput', ['$http', '$resource'
         spinner = $element.find('spinner'),
         restResource;
 
-      restResource = $resource($scope.quicksearchUrl,
-        null,
-        {
-          query: {
-            method: 'GET',
-            params: { pattern: '@pattern' },
-            isArray: true
-          }
-        });
+      if ($scope.quicksearchUrl) {
+        restResource = $resource($scope.quicksearchUrl,
+          null,
+          {
+            query: {
+              method: 'GET',
+              params: { pattern: '@pattern' },
+              isArray: true
+            }
+          });
+      }
 
       function showQuickSearchResults() {
         var val = input.val(),
@@ -66,7 +68,9 @@ angular.module('angular-widgets').directive('searchInput', ['$http', '$resource'
 
       if (input) {
         input.on('focus', onFocus);
-        input.on('input', showQuickSearchResults);
+        if ($scope.quicksearchUrl) {
+          input.on('input', showQuickSearchResults);
+        }
         input.on('blur', onBlur);
       }
     }
