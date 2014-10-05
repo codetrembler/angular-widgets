@@ -16,6 +16,7 @@
   },
   "ignore": [
     "app",
+    "bower.json",
     "Gruntfile.js",
     "karma.conf.js",
     "package.json",
