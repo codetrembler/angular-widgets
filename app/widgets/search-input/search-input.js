@@ -14,7 +14,6 @@ angular.module('angular-widgets').directive('searchInput', ['$resource', functio
     },
     link: function ($scope, $element) {
       var input = $element.find('input'),
-        spinner = $element.find('spinner'),
         restResource;
 
       if ($scope.quicksearchUrl) {
@@ -34,14 +33,14 @@ angular.module('angular-widgets').directive('searchInput', ['$resource', functio
           searchResult;
 
         if (val.length > 0) {
-          spinner.css('display', 'flex');
+          $element.addClass('loading');
           searchResult = restResource.query({ pattern: val });
           searchResult.$promise.then(function (result) {
             $scope.listItems = result;
           }).catch(function () {
             console.error("no quicksearch results loaded.");
           }).finally(function () {
-            spinner.css('display', 'none');
+            $element.removeClass('loading');
           });
         } else {
           $scope.$apply(function () {

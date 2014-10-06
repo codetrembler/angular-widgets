@@ -163,17 +163,17 @@ module.exports = function (grunt) {
         autoWatch: false,
         browsers: ['PhantomJS']
       }
-    }
+    },
 
-//    watch: {
-//      scripts: {
-//        files: ['app/scripts/**', 'app/styles/**', 'app/*.html', 'app/templates/*.html'],
-//        tasks: ['debugTomcat', 'uglify:devmock'],
-//        options: {
-//          spawn: false
-//        }
-//      }
-//    }
+    watch: {
+      scripts: {
+        files: ['app/**/*.js', 'app/**/*.less', 'app/**/*.html'],
+        tasks: ['copy:all', 'htmlmin:src', 'html2js:src', 'less:src', 'uglify:src', 'string-replace:src'],
+        options: {
+          spawn: false
+        }
+      }
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');

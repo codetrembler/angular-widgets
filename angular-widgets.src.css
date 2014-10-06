@@ -1,18 +1,13 @@
 search-input {
+  position: relative;
   display: block;
   border-radius: 14px;
   border: 0px;
   font-size: 14px;
   background-color: white;
 }
-search-input > div {
-  display: flex;
-  display: -webkit-flex;
-  align-items: center;
-  border-radius: inherit;
-}
-search-input > div input {
-  background-image: url("../widgets/search-input/magnifier.svg");
+search-input input {
+  background-image: url("resources/magnifier.svg");
   background-position: 3px center;
   background-repeat: no-repeat;
   border-width: 0px;
@@ -20,14 +15,13 @@ search-input > div input {
   padding-left: 25px;
   padding-right: 10px;
   font-size: inherit;
-  flex-grow: 1;
-  flex-shrink: 1;
-  -webkit-flex-grow: 1;
 }
-search-input > div spinner {
+search-input spinner {
   display: none;
-  flex-shrink: 0;
-  margin-right: 6px;
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  margin-top: -4px;
 }
 search-input ul {
   position: absolute;
@@ -53,6 +47,12 @@ search-input ul li p {
 }
 search-input ul li:hover {
   background-color: #d3d3d3;
+}
+search-input.loading input {
+  background-image: none;
+}
+search-input.loading spinner {
+  display: block;
 }
 spinner {
   display: block;

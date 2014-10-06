@@ -1,7 +1,7 @@
 angular.module("templates-src", [ "search-input.html", "spinner.html" ]);
 
 angular.module("search-input.html", []).run([ "$templateCache", function($templateCache) {
-    $templateCache.put("search-input.html", '<div><input placeholder="Suche"><spinner></spinner></div>\n' + '<ul ng-if="listItems && listItems.length > 0">\n' + '  <li ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </li>\n" + "</ul>");
+    $templateCache.put("search-input.html", '<input placeholder="Suche"><spinner></spinner>\n' + '<ul ng-if="listItems && listItems.length > 0">\n' + '  <li ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </li>\n" + "</ul>");
 } ]);
 
 angular.module("spinner.html", []).run([ "$templateCache", function($templateCache) {
@@ -21,7 +21,7 @@ angular.module("angular-widgets").directive("searchInput", [ "$resource", functi
             onBlur: "="
         },
         link: function($scope, $element) {
-            var input = $element.find("input"), spinner = $element.find("spinner"), restResource;
+            var input = $element.find("input"), restResource;
             if ($scope.quicksearchUrl) {
                 restResource = $resource($scope.quicksearchUrl, null, {
                     query: {
@@ -36,7 +36,7 @@ angular.module("angular-widgets").directive("searchInput", [ "$resource", functi
             function showQuickSearchResults() {
                 var val = input.val(), searchResult;
                 if (val.length > 0) {
-                    spinner.css("display", "flex");
+                    $element.addClass("loading");
                     searchResult = restResource.query({
                         pattern: val
                     });
@@ -45,7 +45,7 @@ angular.module("angular-widgets").directive("searchInput", [ "$resource", functi
                     }).catch(function() {
                         console.error("no quicksearch results loaded.");
                     }).finally(function() {
-                        spinner.css("display", "none");
+                        $element.removeClass("loading");
                     });
                 } else {
                     $scope.$apply(function() {
