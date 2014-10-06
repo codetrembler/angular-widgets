@@ -7,10 +7,12 @@ search-input {
   border-radius: @border-radius;
   border: 0px;
   font-size: @default-font-size;
+  background-color: white;
 
-  div {
+  > div {
     display: flex;
     display: -webkit-flex;
+    align-items: center;
     border-radius: inherit;
 
     input {
@@ -25,7 +27,14 @@ search-input {
       font-size: inherit;
 
       flex-grow: 1;
+      flex-shrink: 1;
       -webkit-flex-grow: 1;
+    }
+
+    spinner {
+      display: none;
+      flex-shrink: 0;
+      margin-right: 6px;
     }
   }
 

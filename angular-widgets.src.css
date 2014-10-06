@@ -3,13 +3,15 @@ search-input {
   border-radius: 14px;
   border: 0px;
   font-size: 14px;
+  background-color: white;
 }
-search-input div {
+search-input > div {
   display: flex;
   display: -webkit-flex;
+  align-items: center;
   border-radius: inherit;
 }
-search-input div input {
+search-input > div input {
   background-image: url("../widgets/search-input/magnifier.svg");
   background-position: 3px center;
   background-repeat: no-repeat;
@@ -19,7 +21,13 @@ search-input div input {
   padding-right: 10px;
   font-size: inherit;
   flex-grow: 1;
+  flex-shrink: 1;
   -webkit-flex-grow: 1;
+}
+search-input > div spinner {
+  display: none;
+  flex-shrink: 0;
+  margin-right: 6px;
 }
 search-input ul {
   position: absolute;
@@ -54,6 +62,7 @@ spinner > div {
   align-items: center;
 }
 spinner > div > div {
+  flex-shrink: 0;
   width: 8px;
   height: 8px;
   background-color: #3d3d3d;
