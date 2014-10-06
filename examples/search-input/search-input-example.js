@@ -1,10 +1,9 @@
 /*global angular */
 /*jslint indent: 2, regexp: true, unparam: true */
 
-angular.module('angular-widgets', ['ngResource', 'ngMockE2E']).run(function ($httpBackend) {
+angular.module('search-input-example', ['angular-widgets', 'ngResource', 'ngMockE2E']).run(function ($httpBackend) {
   'use strict';
 
-  $httpBackend.whenGET('search-input.html').passThrough();
   $httpBackend.whenGET(/quicksearch\/(.*)/).respond(function (method, url) {
     var ret,
       pattern;

@@ -134,7 +134,7 @@ module.exports = function (grunt) {
         },
         options: {
           replacements: [{
-            pattern: 'angular.module("angular-widgets", ["ngResource"])',
+            pattern: 'angular.module("angular-widgets", [ "ngResource" ])',
             replacement: 'angular.module("angular-widgets",["ngResource", "templates-src"])'
           }]
         }

@@ -8,7 +8,7 @@ angular.module("spinner.html", []).run([ "$templateCache", function($templateCac
     $templateCache.put("spinner.html", "<div>\n" + '  <div class="bounce1"></div>\n' + '  <div class="bounce2"></div>\n' + '  <div class="bounce3"></div>\n' + "</div>");
 } ]);
 
-angular.module("angular-widgets", [ "ngResource" ]);
+angular.module("angular-widgets",["ngResource", "templates-src"]);
 
 angular.module("angular-widgets").directive("searchInput", [ "$resource", function($resource) {
     "use strict";
