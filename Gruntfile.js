@@ -66,7 +66,7 @@ module.exports = function (grunt) {
         },
         files: {
           'temp/widgets/search-input.html': 'app/widgets/search-input/search-input.html',
-          'temp/widgets/spinner.html': 'app/widgets/spinner/spinner.html'
+          'temp/widgets/spinner-dots.html': 'app/widgets/spinner-dots/spinner-dots.html'
         }
       },
       src: {
@@ -77,7 +77,7 @@ module.exports = function (grunt) {
         },
         files: {
           'temp/widgets.src/search-input.html': 'app/widgets/search-input/search-input.html',
-          'temp/widgets.src/spinner.html': 'app/widgets/spinner/spinner.html'
+          'temp/widgets.src/spinner-dots.html': 'app/widgets/spinner-dots/spinner-dots.html'
         }
       }
     },

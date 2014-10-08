@@ -1,7 +1,11 @@
-angular.module("templates-src", [ "search-input.html", "spinner.html" ]);
+angular.module("templates-src", [ "search-input.html", "spinner-dots.html", "spinner.html" ]);
 
 angular.module("search-input.html", []).run([ "$templateCache", function($templateCache) {
-    $templateCache.put("search-input.html", '<input placeholder="Suche"><spinner></spinner>\n' + '<ul ng-if="listItems && listItems.length > 0">\n' + '  <li ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </li>\n" + "</ul>");
+    $templateCache.put("search-input.html", '<input placeholder="Suche"><aw-spinner-dots></aw-spinner-dots>\n' + '<ul ng-if="listItems && listItems.length > 0">\n' + '  <li ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </li>\n" + "</ul>");
+} ]);
+
+angular.module("spinner-dots.html", []).run([ "$templateCache", function($templateCache) {
+    $templateCache.put("spinner-dots.html", "<div>\n" + '  <div class="bounce1"></div>\n' + '  <div class="bounce2"></div>\n' + '  <div class="bounce3"></div>\n' + "</div>");
 } ]);
 
 angular.module("spinner.html", []).run([ "$templateCache", function($templateCache) {
@@ -78,10 +82,10 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", func
     };
 } ]);
 
-angular.module("angular-widgets").directive("awSpinner", [ function() {
+angular.module("angular-widgets").directive("awSpinnerDots", [ function() {
     "use strict";
     return {
         restrict: "E",
-        templateUrl: "spinner.html"
+        templateUrl: "spinner-dots.html"
     };
 } ]);

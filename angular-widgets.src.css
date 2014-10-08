@@ -18,7 +18,7 @@ aw-search-input input {
   padding-right: 10px;
   font-size: inherit;
 }
-aw-search-input spinner {
+aw-search-input aw-spinner-dots {
   display: none;
   position: absolute;
   left: 0px;
@@ -53,13 +53,13 @@ aw-search-input ul li:hover {
 aw-search-input.loading input {
   background-image: none;
 }
-aw-search-input.loading spinner {
+aw-search-input.loading aw-spinner-dots {
   display: block;
 }
-aw-spinner {
+aw-spinner-dots {
   display: block;
 }
-aw-spinner > div {
+aw-spinner-dots > div {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -69,7 +69,7 @@ aw-spinner > div {
       -ms-flex-align: center;
           align-items: center;
 }
-aw-spinner > div > div {
+aw-spinner-dots > div > div {
   -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
           flex-shrink: 0;
@@ -84,11 +84,11 @@ aw-spinner > div > div {
   -webkit-animation-fill-mode: both;
           animation-fill-mode: both;
 }
-aw-spinner > div > div.bounce1 {
+aw-spinner-dots > div > div.bounce1 {
   -webkit-animation-delay: -0.32s;
           animation-delay: -0.32s;
 }
-aw-spinner > div > div.bounce2 {
+aw-spinner-dots > div > div.bounce2 {
   -webkit-animation-delay: -0.16s;
           animation-delay: -0.16s;
 }
