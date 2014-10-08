@@ -26,6 +26,35 @@ module.exports = function (grunt) {
         files: {
           'angular-widgets.src.css': ['app/styles/main.less']
         }
+      },
+      examples: {
+        options: {
+          paths: ["styles"],
+          beautify: true,
+          compress: false,
+          cleancss: false
+        },
+        files: {
+          'examples/angular-widgets-examples.src.css': ['examples/**/*.less']
+        }
+      }
+    },
+
+    autoprefixer: {
+      options: {
+        browsers: ['last 2 versions', 'ie 10']
+      },
+      dist: {
+        src: 'angular-widgets.min.css',
+        dest: 'angular-widgets.min.css'
+      },
+      src: {
+        src: 'angular-widgets.src.css',
+        dest: 'angular-widgets.src.css'
+      },
+      examples: {
+        src: 'examples/angular-widgets-examples.src.css',
+        dest: 'examples/angular-widgets-examples.src.css'
       }
     },
 
@@ -167,8 +196,15 @@ module.exports = function (grunt) {
 
     watch: {
       scripts: {
-        files: ['app/**/*.js', 'app/**/*.less', 'app/**/*.html'],
-        tasks: ['copy:all', 'htmlmin:src', 'html2js:src', 'less:src', 'uglify:src', 'string-replace:src'],
+        files: ['app/**/*.js', 'app/**/*.html'],
+        tasks: ['htmlmin:src', 'html2js:src', 'uglify:src', 'string-replace:src'],
+        options: {
+          spawn: false
+        }
+      },
+      less: {
+        files: ['app/**/*.less'],
+        tasks: ['less:src', 'autoprefixer:src', 'examples'],
         options: {
           spawn: false
         }
@@ -186,9 +222,11 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-html2js');
+  grunt.loadNpmTasks('grunt-autoprefixer');
 
-  grunt.registerTask('dist', ['jslint', 'karma', 'copy:all', 'htmlmin:dist', 'html2js:dist', 'less:dist', 'uglify:dist', 'string-replace:styles', 'string-replace:dist']);
-  grunt.registerTask('src', ['jslint', 'karma', 'copy:all', 'htmlmin:src', 'html2js:src', 'less:src', 'uglify:src', 'string-replace:src']);
+  grunt.registerTask('dist', ['jslint', 'karma', 'copy:all', 'htmlmin:dist', 'html2js:dist', 'less:dist', 'autoprefixer:dist', 'uglify:dist', 'string-replace:styles', 'string-replace:dist']);
+  grunt.registerTask('src', ['jslint', 'karma', 'copy:all', 'htmlmin:src', 'html2js:src', 'less:src', 'autoprefixer:src', 'uglify:src', 'string-replace:src']);
+  grunt.registerTask('examples', ['less:examples', 'autoprefixer:examples']);
 
   grunt.registerTask('default', ['clean', 'dist', 'src']);
   grunt.registerTask('travis', ['clean', 'dist', 'src']);
