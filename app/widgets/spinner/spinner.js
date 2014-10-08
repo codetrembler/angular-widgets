@@ -1,7 +1,7 @@
 /*jslint indent: 2 */
 /*global angular */
 
-angular.module('angular-widgets').directive('spinner', [function () {
+angular.module('angular-widgets').directive('awSpinner', [function () {
   'use strict';
 
   return {

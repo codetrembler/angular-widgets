@@ -10,7 +10,7 @@ angular.module("spinner.html", []).run([ "$templateCache", function($templateCac
 
 angular.module("angular-widgets",["ngResource", "templates-src"]);
 
-angular.module("angular-widgets").directive("searchInput", [ "$resource", function($resource) {
+angular.module("angular-widgets").directive("awSearchInput", [ "$resource", function($resource) {
     "use strict";
     return {
         restrict: "E",
@@ -78,7 +78,7 @@ angular.module("angular-widgets").directive("searchInput", [ "$resource", functi
     };
 } ]);
 
-angular.module("angular-widgets").directive("spinner", [ function() {
+angular.module("angular-widgets").directive("awSpinner", [ function() {
     "use strict";
     return {
         restrict: "E",

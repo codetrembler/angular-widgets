@@ -1,7 +1,7 @@
 /*jslint indent: 2, unparam: true */
 /*global angular, console */
 
-angular.module('angular-widgets').directive('searchInput', ['$resource', function ($resource) {
+angular.module('angular-widgets').directive('awSearchInput', ['$resource', function ($resource) {
   'use strict';
 
   return {

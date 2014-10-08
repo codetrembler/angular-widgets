@@ -1,4 +1,4 @@
-search-input {
+aw-search-input {
   position: relative;
   display: block;
   border-radius: 14px;
@@ -6,7 +6,7 @@ search-input {
   font-size: 14px;
   background-color: white;
 }
-search-input input {
+aw-search-input input {
   box-sizing: border-box;
   width: 100%;
   background-image: url("resources/magnifier.svg");
@@ -18,14 +18,14 @@ search-input input {
   padding-right: 10px;
   font-size: inherit;
 }
-search-input spinner {
+aw-search-input spinner {
   display: none;
   position: absolute;
   left: 0px;
   top: 50%;
   margin-top: -4px;
 }
-search-input ul {
+aw-search-input ul {
   position: absolute;
   padding: 0px;
   margin: 0px;
@@ -39,27 +39,27 @@ search-input ul {
   overflow-y: auto;
   overflow-x: hidden;
 }
-search-input ul li {
+aw-search-input ul li {
   cursor: pointer;
   padding: 10px;
 }
-search-input ul li p {
+aw-search-input ul li p {
   padding: 0px;
   margin: 0px;
 }
-search-input ul li:hover {
+aw-search-input ul li:hover {
   background-color: #d3d3d3;
 }
-search-input.loading input {
+aw-search-input.loading input {
   background-image: none;
 }
-search-input.loading spinner {
+aw-search-input.loading spinner {
   display: block;
 }
-spinner {
+aw-spinner {
   display: block;
 }
-spinner > div {
+aw-spinner > div {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -69,7 +69,7 @@ spinner > div {
       -ms-flex-align: center;
           align-items: center;
 }
-spinner > div > div {
+aw-spinner > div > div {
   -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
           flex-shrink: 0;
@@ -84,11 +84,11 @@ spinner > div > div {
   -webkit-animation-fill-mode: both;
           animation-fill-mode: both;
 }
-spinner > div > div.bounce1 {
+aw-spinner > div > div.bounce1 {
   -webkit-animation-delay: -0.32s;
           animation-delay: -0.32s;
 }
-spinner > div > div.bounce2 {
+aw-spinner > div > div.bounce2 {
   -webkit-animation-delay: -0.16s;
           animation-delay: -0.16s;
 }
