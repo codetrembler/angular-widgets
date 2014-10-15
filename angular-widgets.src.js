@@ -1,7 +1,7 @@
 angular.module("templates-src", [ "search-input.html", "spinner-dots.html", "spinner.html" ]);
 
 angular.module("search-input.html", []).run([ "$templateCache", function($templateCache) {
-    $templateCache.put("search-input.html", '<input placeholder="Suche"><aw-spinner-dots></aw-spinner-dots>\n' + '<ul ng-if="listItems && listItems.length > 0">\n' + '  <li ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </li>\n" + "</ul>");
+    $templateCache.put("search-input.html", '<input placeholder="{{placeholder}}"><aw-spinner-dots></aw-spinner-dots>\n' + '<ul ng-if="listItems && listItems.length > 0">\n' + '  <li ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </li>\n" + "</ul>");
 } ]);
 
 angular.module("spinner-dots.html", []).run([ "$templateCache", function($templateCache) {
@@ -21,6 +21,7 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", func
         templateUrl: "search-input.html",
         scope: {
             quicksearchUrl: "@",
+            placeholder: "@",
             onFocus: "=",
             onBlur: "="
         },

@@ -9,6 +9,7 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', funct
     templateUrl: 'search-input.html',
     scope: {
       quicksearchUrl: '@',
+      placeholder: '@',
       onFocus: '=',
       onBlur: '='
     },
