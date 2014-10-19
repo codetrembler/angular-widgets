@@ -106,8 +106,9 @@ module.exports = function (grunt) {
             "temp/widget-templates.js",
             "app/app.js",
             "app/widgets/**/*.js",
-            "!app/widgets/**/example.js",
-            "!app/widgets/**/*.spec.js"
+            "!app/widgets/**/*.spec.js",
+            "app/utils/**/*.js",
+            "!app/utils/**/*.spec.js"
           ]
         }
       },
@@ -122,8 +123,9 @@ module.exports = function (grunt) {
             "temp/widget-templates.src.js",
             "app/app.js",
             "app/widgets/**/*.js",
-            "!app/widgets/**/example.js",
-            "!app/widgets/**/*.spec.js"
+            "!app/widgets/**/*.spec.js",
+            "app/utils/**/*.js",
+            "!app/utils/**/*.spec.js"
           ]
         }
       }

@@ -26,6 +26,7 @@ aw-search-input aw-spinner-dots {
   margin-top: -4px;
 }
 aw-search-input ul {
+  z-index: 100;
   position: absolute;
   padding: 0px;
   margin: 0px;
@@ -39,15 +40,18 @@ aw-search-input ul {
   overflow-y: auto;
   overflow-x: hidden;
 }
-aw-search-input ul li {
+aw-search-input ul a {
+  display: block;
   cursor: pointer;
   padding: 10px;
+  text-decoration: none;
 }
-aw-search-input ul li p {
+aw-search-input ul a p {
   padding: 0px;
   margin: 0px;
+  color: #3d3d3d;
 }
-aw-search-input ul li:hover {
+aw-search-input ul a:hover {
   background-color: #d3d3d3;
 }
 aw-search-input.loading input {

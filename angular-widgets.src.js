@@ -1,7 +1,7 @@
 angular.module("templates-src", [ "search-input.html", "spinner-dots.html", "spinner.html" ]);
 
 angular.module("search-input.html", []).run([ "$templateCache", function($templateCache) {
-    $templateCache.put("search-input.html", '<input placeholder="{{placeholder}}"><aw-spinner-dots></aw-spinner-dots>\n' + '<ul ng-if="listItems && listItems.length > 0">\n' + '  <li ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </li>\n" + "</ul>");
+    $templateCache.put("search-input.html", '<input placeholder="{{ placeholder }}"><aw-spinner-dots></aw-spinner-dots>\n' + '<ul ng-click="quickSearchResultClicked()" ng-if="showQuickSearchResults">\n' + '  <a href="{{ listItem.href }}" ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </a>\n" + "</ul>");
 } ]);
 
 angular.module("spinner-dots.html", []).run([ "$templateCache", function($templateCache) {
@@ -14,7 +14,7 @@ angular.module("spinner.html", []).run([ "$templateCache", function($templateCac
 
 angular.module("angular-widgets",["ngResource", "templates-src"]);
 
-angular.module("angular-widgets").directive("awSearchInput", [ "$resource", function($resource) {
+angular.module("angular-widgets").directive("awSearchInput", [ "$resource", "DomService", function($resource, DomService) {
     "use strict";
     return {
         restrict: "E",
@@ -27,17 +27,10 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", func
         },
         link: function($scope, $element) {
             var input = $element.find("input"), restResource;
-            if ($scope.quicksearchUrl) {
-                restResource = $resource($scope.quicksearchUrl, null, {
-                    query: {
-                        method: "GET",
-                        params: {
-                            pattern: "@pattern"
-                        },
-                        isArray: true
-                    }
-                });
-            }
+            $scope.showQuickSearchResults = false;
+            $scope.quickSearchResultClicked = function() {
+                input.val("");
+            };
             function showQuickSearchResults() {
                 var val = input.val(), searchResult;
                 if (val.length > 0) {
@@ -47,14 +40,16 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", func
                     });
                     searchResult.$promise.then(function(result) {
                         $scope.listItems = result;
+                        $scope.showQuickSearchResults = true;
                     }).catch(function() {
                         console.error("no quicksearch results loaded.");
+                        $scope.showQuickSearchResults = false;
                     }).finally(function() {
                         $element.removeClass("loading");
                     });
                 } else {
                     $scope.$apply(function() {
-                        $scope.listItems = undefined;
+                        $scope.showQuickSearchResults = false;
                     });
                 }
             }
@@ -62,23 +57,51 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", func
                 if ($scope.onBlur) {
                     $scope.onBlur();
                 }
-                $scope.$apply(function() {
-                    $scope.listItems = undefined;
-                });
             }
             function onFocus() {
+                var bodyElement;
                 if ($scope.onFocus) {
                     $scope.onFocus();
                 }
-                showQuickSearchResults();
-            }
-            if (input) {
-                input.on("focus", onFocus);
-                if ($scope.quicksearchUrl) {
-                    input.on("input", showQuickSearchResults);
+                function onClick(event) {
+                    if (event.target.localName !== "input" || !DomService.elementIsChildOf(event.target, $element[0])) {
+                        bodyElement.off("click", onClick);
+                        $scope.$apply(function() {
+                            $scope.showQuickSearchResults = false;
+                        });
+                    }
                 }
-                input.on("blur", onBlur);
+                bodyElement = angular.element(document.body);
+                if (bodyElement) {
+                    bodyElement.on("click", onClick);
+                }
+                if (input.val().length > 0 && !$scope.showQuickSearchResults) {
+                    $scope.$apply(function() {
+                        $scope.showQuickSearchResults = true;
+                    });
+                }
             }
+            function init() {
+                if ($scope.quicksearchUrl) {
+                    restResource = $resource($scope.quicksearchUrl, null, {
+                        query: {
+                            method: "GET",
+                            params: {
+                                pattern: "@pattern"
+                            },
+                            isArray: true
+                        }
+                    });
+                }
+                if (input) {
+                    input.on("focus", onFocus);
+                    input.on("blur", onBlur);
+                    if ($scope.quicksearchUrl) {
+                        input.on("input", showQuickSearchResults);
+                    }
+                }
+            }
+            init();
         }
     };
 } ]);
@@ -89,4 +112,20 @@ angular.module("angular-widgets").directive("awSpinnerDots", [ function() {
         restrict: "E",
         templateUrl: "spinner-dots.html"
     };
+} ]);
+
+angular.module("angular-widgets").factory("DomService", [ function() {
+    "use strict";
+    var self = {};
+    self.elementIsChildOf = function(element, parent) {
+        var current = element;
+        while (current) {
+            if (current.parentNode === parent) {
+                return true;
+            }
+            current = current.parentNode;
+        }
+        return false;
+    };
+    return self;
 } ]);

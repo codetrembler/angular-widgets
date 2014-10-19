@@ -17,7 +17,7 @@ describe('searchInput', function () {
   beforeEach(angular.mock.module('search-input.html'));
 
   beforeEach(inject(function ($rootScope, $compile, _$httpBackend_) {
-    var template = '<aw-search-input quicksearch-url="quicksearch/:pattern"></aw-search-input>';
+    var template = '<aw-search-input placeholder="Search" quicksearch-url="quicksearch/:pattern"></aw-search-input>';
     $scope = $rootScope.$new();
     element = $compile(template)($scope);
     $scope.$apply();
@@ -37,6 +37,11 @@ describe('searchInput', function () {
     event.initEvent(name, true, true);
     element.dispatchEvent(event);
   }
+
+  it('should show placeholder', function () {
+    var input = element.find('input');
+    expect(input[0].placeholder).toBe('Search');
+  });
 
   it('should load quicksearch infos', function (done) {
     // Arrange

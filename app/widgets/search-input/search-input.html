@@ -1,7 +1,7 @@
-<input placeholder="{{placeholder}}"></input><aw-spinner-dots></aw-spinner-dots>
-<ul ng-if="listItems && listItems.length > 0">
-  <li ng-repeat="listItem in listItems">
+<input placeholder="{{ placeholder }}"></input><aw-spinner-dots></aw-spinner-dots>
+<ul ng-click="quickSearchResultClicked()" ng-if="showQuickSearchResults">
+  <a href="{{ listItem.href }}" ng-repeat="listItem in listItems">
     <p class='title' ng-bind="listItem.title"></p>
     <p class='subtitle' mathjax-bind="listItem.quickinfo"></p>
-  </li>
+  </a>
 </ul>

@@ -1,7 +1,7 @@
-/*jslint indent: 2, unparam: true */
-/*global angular, console */
+/*jslint indent: 2 */
+/*global angular, console, document */
 
-angular.module('angular-widgets').directive('awSearchInput', ['$resource', function ($resource) {
+angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomService', function ($resource, DomService) {
   'use strict';
 
   return {
@@ -17,17 +17,11 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', funct
       var input = $element.find('input'),
         restResource;
 
-      if ($scope.quicksearchUrl) {
-        restResource = $resource($scope.quicksearchUrl,
-          null,
-          {
-            query: {
-              method: 'GET',
-              params: { pattern: '@pattern' },
-              isArray: true
-            }
-          });
-      }
+      $scope.showQuickSearchResults = false;
+
+      $scope.quickSearchResultClicked = function () {
+        input.val('');
+      };
 
       function showQuickSearchResults() {
         var val = input.val(),
@@ -38,14 +32,16 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', funct
           searchResult = restResource.query({ pattern: val });
           searchResult.$promise.then(function (result) {
             $scope.listItems = result;
+            $scope.showQuickSearchResults = true;
           }).catch(function () {
             console.error("no quicksearch results loaded.");
+            $scope.showQuickSearchResults = false;
           }).finally(function () {
             $element.removeClass('loading');
           });
         } else {
           $scope.$apply(function () {
-            $scope.listItems = undefined;
+            $scope.showQuickSearchResults = false;
           });
         }
       }
@@ -54,25 +50,63 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', funct
         if ($scope.onBlur) {
           $scope.onBlur();
         }
-        $scope.$apply(function () {
-          $scope.listItems = undefined;
-        });
       }
 
       function onFocus() {
+        var bodyElement;
+
         if ($scope.onFocus) {
           $scope.onFocus();
         }
-        showQuickSearchResults();
+
+        function onClick(event) {
+          // if not clicked into input, the quicksearch results must be hidden.
+          if (event.target.localName !== 'input' || !DomService.elementIsChildOf(event.target, $element[0])) {
+            bodyElement.off('click', onClick);
+            $scope.$apply(function () {
+              $scope.showQuickSearchResults = false;
+            });
+          }
+        }
+
+        // Add click event listener to hide dropdown when clicking outside the input.
+        bodyElement = angular.element(document.body);
+        if (bodyElement) {
+          bodyElement.on('click', onClick);
+        }
+
+        // show quicksearch results after input focus, when quicksearch results are currently hidden.
+        if (input.val().length > 0 && !$scope.showQuickSearchResults) {
+          $scope.$apply(function () {
+            $scope.showQuickSearchResults = true;
+          });
+        }
       }
 
-      if (input) {
-        input.on('focus', onFocus);
+      function init() {
         if ($scope.quicksearchUrl) {
-          input.on('input', showQuickSearchResults);
+          restResource = $resource($scope.quicksearchUrl,
+            null,
+            {
+              query: {
+                method: 'GET',
+                params: { pattern: '@pattern' },
+                isArray: true
+              }
+            });
         }
-        input.on('blur', onBlur);
+
+        if (input) {
+          input.on('focus', onFocus);
+          input.on('blur', onBlur);
+
+          if ($scope.quicksearchUrl) {
+            input.on('input', showQuickSearchResults);
+          }
+        }
       }
+
+      init();
     }
   };
 }]);

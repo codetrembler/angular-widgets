@@ -12,17 +12,22 @@ angular.module('search-input-example', ['angular-widgets', 'ngResource', 'ngMock
     ret = [{
       "id": "qr1",
       "title": pattern,
-      "quickinfo": "Additional info 1"
+      "quickinfo": "Additional info 1",
+      "href": "#/" + pattern
     }, {
       "id": "qr2",
       "title": "Quick Result 2",
-      "quickinfo": "Additional info 2"
+      "quickinfo": "Additional info 2",
+      "href": "#/qr2"
+
     }, {
       "id": "qr3",
       "title": "Quick Result 3",
-      "quickinfo": "Additional info 3"
+      "quickinfo": "Additional info 3",
+      "href": "#/qr3"
     }];
 
     return [200, ret, {}];
   });
+
 });

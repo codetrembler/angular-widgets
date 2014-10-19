@@ -33,6 +33,7 @@ aw-search-input {
   }
 
   ul {
+    z-index: 100;
     position: absolute;
     padding: 0px;
     margin: 0px;
@@ -48,12 +49,16 @@ aw-search-input {
     overflow-y: auto;
     overflow-x: hidden;
 
-    li {
+    a {
+      display: block;
       cursor: pointer;
       padding: 10px;
+      text-decoration: none;
+      
       p {
         padding: 0px;
         margin: 0px;
+        color: @default-text-color;
       }
 
       &:hover {
