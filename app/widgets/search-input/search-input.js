@@ -1,7 +1,7 @@
 /*jslint indent: 2 */
 /*global angular, console, document */
 
-angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomService', function ($resource, DomService) {
+angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomService', 'Utils', function ($resource, DomService, Utils) {
   'use strict';
 
   return {
@@ -15,7 +15,17 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomS
     },
     link: function ($scope, $element) {
       var input = $element.find('input'),
-        restResource;
+        bodyElement = angular.element(document.body),
+        restResource = $resource($scope.quicksearchUrl, null, {
+          query: {
+            method: 'GET',
+            params: { pattern: '@pattern' },
+            isArray: true
+          }
+        });
+
+      Utils.assert(input, 'SearchInput: input element does not exist.');
+      Utils.assert(bodyElement, 'SearchInput: body element does not exist.');
 
       $scope.showQuickSearchResults = false;
 
@@ -46,6 +56,16 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomS
         }
       }
 
+      function onClick(event) {
+        // if not clicked into input, the quicksearch results must be hidden.
+        if (event.target.localName !== 'input' || !DomService.elementIsChildOf(event.target, $element[0])) {
+          bodyElement.off('click', onClick);
+          $scope.$apply(function () {
+            $scope.showQuickSearchResults = false;
+          });
+        }
+      }
+
       function onBlur() {
         if ($scope.onBlur) {
           $scope.onBlur();
@@ -53,27 +73,12 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomS
       }
 
       function onFocus() {
-        var bodyElement;
-
         if ($scope.onFocus) {
           $scope.onFocus();
         }
 
-        function onClick(event) {
-          // if not clicked into input, the quicksearch results must be hidden.
-          if (event.target.localName !== 'input' || !DomService.elementIsChildOf(event.target, $element[0])) {
-            bodyElement.off('click', onClick);
-            $scope.$apply(function () {
-              $scope.showQuickSearchResults = false;
-            });
-          }
-        }
-
         // Add click event listener to hide dropdown when clicking outside the input.
-        bodyElement = angular.element(document.body);
-        if (bodyElement) {
-          bodyElement.on('click', onClick);
-        }
+        bodyElement.on('click', onClick);
 
         // show quicksearch results after input focus, when quicksearch results are currently hidden.
         if (input.val().length > 0 && !$scope.showQuickSearchResults) {
@@ -83,26 +88,22 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomS
         }
       }
 
-      function init() {
-        if ($scope.quicksearchUrl) {
-          restResource = $resource($scope.quicksearchUrl,
-            null,
-            {
-              query: {
-                method: 'GET',
-                params: { pattern: '@pattern' },
-                isArray: true
-              }
-            });
+      function onKeydown(event) {
+        // Tab: 9
+        if (event.which === 9) {
+          bodyElement.off('click', onClick);
+          $scope.$apply(function () {
+            $scope.showQuickSearchResults = false;
+          });
         }
+      }
 
-        if (input) {
-          input.on('focus', onFocus);
-          input.on('blur', onBlur);
-
-          if ($scope.quicksearchUrl) {
-            input.on('input', showQuickSearchResults);
-          }
+      function init() {
+        input.on('focus', onFocus);
+        input.on('blur', onBlur);
+        input.on('keydown', onKeydown);
+        if ($scope.quicksearchUrl) {
+          input.on('input', showQuickSearchResults);
         }
       }
 

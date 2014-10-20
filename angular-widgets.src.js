@@ -14,7 +14,7 @@ angular.module("spinner.html", []).run([ "$templateCache", function($templateCac
 
 angular.module("angular-widgets",["ngResource", "templates-src"]);
 
-angular.module("angular-widgets").directive("awSearchInput", [ "$resource", "DomService", function($resource, DomService) {
+angular.module("angular-widgets").directive("awSearchInput", [ "$resource", "DomService", "Utils", function($resource, DomService, Utils) {
     "use strict";
     return {
         restrict: "E",
@@ -26,7 +26,17 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", "Dom
             onBlur: "="
         },
         link: function($scope, $element) {
-            var input = $element.find("input"), restResource;
+            var input = $element.find("input"), bodyElement = angular.element(document.body), restResource = $resource($scope.quicksearchUrl, null, {
+                query: {
+                    method: "GET",
+                    params: {
+                        pattern: "@pattern"
+                    },
+                    isArray: true
+                }
+            });
+            Utils.assert(input, "SearchInput: input element does not exist.");
+            Utils.assert(bodyElement, "SearchInput: body element does not exist.");
             $scope.showQuickSearchResults = false;
             $scope.quickSearchResultClicked = function() {
                 input.val("");
@@ -53,52 +63,44 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", "Dom
                     });
                 }
             }
+            function onClick(event) {
+                if (event.target.localName !== "input" || !DomService.elementIsChildOf(event.target, $element[0])) {
+                    bodyElement.off("click", onClick);
+                    $scope.$apply(function() {
+                        $scope.showQuickSearchResults = false;
+                    });
+                }
+            }
             function onBlur() {
                 if ($scope.onBlur) {
                     $scope.onBlur();
                 }
             }
             function onFocus() {
-                var bodyElement;
                 if ($scope.onFocus) {
                     $scope.onFocus();
                 }
-                function onClick(event) {
-                    if (event.target.localName !== "input" || !DomService.elementIsChildOf(event.target, $element[0])) {
-                        bodyElement.off("click", onClick);
-                        $scope.$apply(function() {
-                            $scope.showQuickSearchResults = false;
-                        });
-                    }
-                }
-                bodyElement = angular.element(document.body);
-                if (bodyElement) {
-                    bodyElement.on("click", onClick);
-                }
+                bodyElement.on("click", onClick);
                 if (input.val().length > 0 && !$scope.showQuickSearchResults) {
                     $scope.$apply(function() {
                         $scope.showQuickSearchResults = true;
                     });
                 }
             }
-            function init() {
-                if ($scope.quicksearchUrl) {
-                    restResource = $resource($scope.quicksearchUrl, null, {
-                        query: {
-                            method: "GET",
-                            params: {
-                                pattern: "@pattern"
-                            },
-                            isArray: true
-                        }
+            function onKeydown(event) {
+                if (event.which === 9) {
+                    bodyElement.off("click", onClick);
+                    $scope.$apply(function() {
+                        $scope.showQuickSearchResults = false;
                     });
                 }
-                if (input) {
-                    input.on("focus", onFocus);
-                    input.on("blur", onBlur);
-                    if ($scope.quicksearchUrl) {
-                        input.on("input", showQuickSearchResults);
-                    }
+            }
+            function init() {
+                input.on("focus", onFocus);
+                input.on("blur", onBlur);
+                input.on("keydown", onKeydown);
+                if ($scope.quicksearchUrl) {
+                    input.on("input", showQuickSearchResults);
                 }
             }
             init();
@@ -126,6 +128,17 @@ angular.module("angular-widgets").factory("DomService", [ function() {
             current = current.parentNode;
         }
         return false;
+    };
+    return self;
+} ]);
+
+angular.module("angular-widgets").factory("Utils", [ function() {
+    "use strict";
+    var self = {};
+    self.assert = function(condition, message) {
+        if (!condition) {
+            throw new Error("Assert failed: " + message);
+        }
     };
     return self;
 } ]);

@@ -1,5 +1,5 @@
-/*jslint indent: 2, nomen: true, unparam: true */
-/*global angular, describe, beforeEach, it, expect, inject, document */
+/*jslint indent: 2, nomen: true */
+/*global angular, describe, beforeEach, it, expect, inject */
 
 /**
  * Testing the dom-service
