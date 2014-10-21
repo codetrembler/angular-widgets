@@ -1,7 +1,7 @@
 /*jslint indent: 2 */
-/*global angular, console, document */
+/*global angular, console */
 
-angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomService', 'Utils', function ($resource, DomService, Utils) {
+angular.module('angular-widgets').directive('awSearchInput', ['$document', '$resource', 'DomService', 'Utils', function ($document, $resource, DomService, Utils) {
   'use strict';
 
   return {
@@ -15,7 +15,6 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomS
     },
     link: function ($scope, $element) {
       var input = $element.find('input'),
-        bodyElement = angular.element(document.body),
         restResource = $resource($scope.quicksearchUrl, null, {
           query: {
             method: 'GET',
@@ -25,7 +24,6 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomS
         });
 
       Utils.assert(input, 'SearchInput: input element does not exist.');
-      Utils.assert(bodyElement, 'SearchInput: body element does not exist.');
 
       $scope.showQuickSearchResults = false;
 
@@ -59,7 +57,7 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomS
       function onClick(event) {
         // if not clicked into input, the quicksearch results must be hidden.
         if (event.target.localName !== 'input' || !DomService.elementIsChildOf(event.target, $element[0])) {
-          bodyElement.off('click', onClick);
+          $document.off('click', onClick);
           $scope.$apply(function () {
             $scope.showQuickSearchResults = false;
           });
@@ -78,7 +76,7 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomS
         }
 
         // Add click event listener to hide dropdown when clicking outside the input.
-        bodyElement.on('click', onClick);
+        $document.on('click', onClick);
 
         // show quicksearch results after input focus, when quicksearch results are currently hidden.
         if (input.val().length > 0 && !$scope.showQuickSearchResults) {
@@ -91,7 +89,7 @@ angular.module('angular-widgets').directive('awSearchInput', ['$resource', 'DomS
       function onKeydown(event) {
         // Tab: 9
         if (event.which === 9) {
-          bodyElement.off('click', onClick);
+          $document.off('click', onClick);
           $scope.$apply(function () {
             $scope.showQuickSearchResults = false;
           });

@@ -14,7 +14,7 @@ angular.module("spinner.html", []).run([ "$templateCache", function($templateCac
 
 angular.module("angular-widgets",["ngResource", "templates-src"]);
 
-angular.module("angular-widgets").directive("awSearchInput", [ "$resource", "DomService", "Utils", function($resource, DomService, Utils) {
+angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$resource", "DomService", "Utils", function($document, $resource, DomService, Utils) {
     "use strict";
     return {
         restrict: "E",
@@ -26,7 +26,7 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", "Dom
             onBlur: "="
         },
         link: function($scope, $element) {
-            var input = $element.find("input"), bodyElement = angular.element(document.body), restResource = $resource($scope.quicksearchUrl, null, {
+            var input = $element.find("input"), restResource = $resource($scope.quicksearchUrl, null, {
                 query: {
                     method: "GET",
                     params: {
@@ -36,7 +36,6 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", "Dom
                 }
             });
             Utils.assert(input, "SearchInput: input element does not exist.");
-            Utils.assert(bodyElement, "SearchInput: body element does not exist.");
             $scope.showQuickSearchResults = false;
             $scope.quickSearchResultClicked = function() {
                 input.val("");
@@ -65,7 +64,7 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", "Dom
             }
             function onClick(event) {
                 if (event.target.localName !== "input" || !DomService.elementIsChildOf(event.target, $element[0])) {
-                    bodyElement.off("click", onClick);
+                    $document.off("click", onClick);
                     $scope.$apply(function() {
                         $scope.showQuickSearchResults = false;
                     });
@@ -80,7 +79,7 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", "Dom
                 if ($scope.onFocus) {
                     $scope.onFocus();
                 }
-                bodyElement.on("click", onClick);
+                $document.on("click", onClick);
                 if (input.val().length > 0 && !$scope.showQuickSearchResults) {
                     $scope.$apply(function() {
                         $scope.showQuickSearchResults = true;
@@ -89,7 +88,7 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$resource", "Dom
             }
             function onKeydown(event) {
                 if (event.which === 9) {
-                    bodyElement.off("click", onClick);
+                    $document.off("click", onClick);
                     $scope.$apply(function() {
                         $scope.showQuickSearchResults = false;
                     });
