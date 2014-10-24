@@ -9,15 +9,15 @@
   <body ng-app="search-input-example">
     <h1>search-input example</h1>
     <h3>Just inserted in document flow</h3>
-    <aw-search-input placeholder="Search" quicksearch-url="quicksearch/:pattern"></aw-search-input>
+    <aw-search-input placeholder="Search" result-url="quicksearch/:pattern"></aw-search-input>
 
     <h3>Inserted with a given width</h3>
-    <aw-search-input class="search-input-width" quicksearch-url="quicksearch/:pattern" on-enter-url="formula-search"></aw-search-input>
+    <aw-search-input class="search-input-width" result-url="quicksearch/:pattern" search-view-url="formula-search"></aw-search-input>
 
     <h3>Inserted within a flexbox and font-size: 20px</h3>
     <div class="flex">
       <label>Search input:</label>
-      <aw-search-input placeholder="Find" quicksearch-url="quicksearch/:pattern"></aw-search-input>
+      <aw-search-input placeholder="Find" result-url="quicksearch/:pattern"></aw-search-input>
     </div>
 
     <script src="../angular.min.js"></script>

@@ -1,5 +1,5 @@
 <input placeholder="{{ placeholder }}"></input><aw-spinner-dots></aw-spinner-dots>
-<ul ng-click="quickSearchResultClicked()" ng-if="showQuickSearchResults">
+<ul ng-click="resultClicked()" ng-if="showResults">
   <a href="{{ listItem.href }}" ng-repeat="listItem in listItems">
     <p class='title' ng-bind="listItem.title"></p>
     <p class='subtitle' mathjax-bind="listItem.quickinfo"></p>

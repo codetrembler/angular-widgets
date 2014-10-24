@@ -17,7 +17,7 @@ describe('searchInput', function () {
   beforeEach(angular.mock.module('search-input.html'));
 
   beforeEach(inject(function ($rootScope, $compile, _$httpBackend_) {
-    var template = '<aw-search-input placeholder="Search" quicksearch-url="quicksearch/:pattern"></aw-search-input>';
+    var template = '<aw-search-input placeholder="Search" result-url="quicksearch/:pattern"></aw-search-input>';
     $scope = $rootScope.$new();
     element = $compile(template)($scope);
     $scope.$apply();

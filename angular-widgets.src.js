@@ -1,7 +1,7 @@
 angular.module("templates-src", [ "search-input.html", "spinner-dots.html", "spinner.html" ]);
 
 angular.module("search-input.html", []).run([ "$templateCache", function($templateCache) {
-    $templateCache.put("search-input.html", '<input placeholder="{{ placeholder }}"><aw-spinner-dots></aw-spinner-dots>\n' + '<ul ng-click="quickSearchResultClicked()" ng-if="showQuickSearchResults">\n' + '  <a href="{{ listItem.href }}" ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </a>\n" + "</ul>");
+    $templateCache.put("search-input.html", '<input placeholder="{{ placeholder }}"><aw-spinner-dots></aw-spinner-dots>\n' + '<ul ng-click="resultClicked()" ng-if="showResults">\n' + '  <a href="{{ listItem.href }}" ng-repeat="listItem in listItems">\n' + '    <p class="title" ng-bind="listItem.title"></p>\n' + '    <p class="subtitle" mathjax-bind="listItem.quickinfo"></p>\n' + "  </a>\n" + "</ul>");
 } ]);
 
 angular.module("spinner-dots.html", []).run([ "$templateCache", function($templateCache) {
@@ -20,14 +20,14 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$re
         restrict: "E",
         templateUrl: "search-input.html",
         scope: {
-            quicksearchUrl: "@",
+            resultUrl: "@",
             placeholder: "@",
-            onEnterUrl: "@",
+            searchViewUrl: "@",
             onFocus: "=",
             onBlur: "="
         },
         link: function($scope, $element) {
-            var input = $element.find("input"), restResource = $resource($scope.quicksearchUrl, null, {
+            var input = $element.find("input"), restResource = $resource($scope.resultUrl, null, {
                 query: {
                     method: "GET",
                     params: {
@@ -37,11 +37,11 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$re
                 }
             });
             Utils.assert(input, "SearchInput: input element does not exist.");
-            $scope.showQuickSearchResults = false;
-            $scope.quickSearchResultClicked = function() {
+            $scope.showResults = false;
+            $scope.resultClicked = function() {
                 input.val("");
             };
-            function showQuickSearchResults() {
+            function showResults() {
                 var val = input.val(), searchResult;
                 if (val.length > 0) {
                     $element.addClass("loading");
@@ -50,16 +50,16 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$re
                     });
                     searchResult.$promise.then(function(result) {
                         $scope.listItems = result;
-                        $scope.showQuickSearchResults = true;
+                        $scope.showResults = true;
                     }).catch(function() {
-                        console.error("no quicksearch results loaded.");
-                        $scope.showQuickSearchResults = false;
+                        console.error("no results results loaded.");
+                        $scope.showResults = false;
                     }).finally(function() {
                         $element.removeClass("loading");
                     });
                 } else {
                     $scope.$apply(function() {
-                        $scope.showQuickSearchResults = false;
+                        $scope.showResults = false;
                     });
                 }
             }
@@ -67,7 +67,7 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$re
                 if (event.target.localName !== "input" || !DomService.elementIsChildOf(event.target, $element[0])) {
                     $document.off("click", onClick);
                     $scope.$apply(function() {
-                        $scope.showQuickSearchResults = false;
+                        $scope.showResults = false;
                     });
                 }
             }
@@ -81,9 +81,9 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$re
                     $scope.onFocus();
                 }
                 $document.on("click", onClick);
-                if (input.val().length > 0 && !$scope.showQuickSearchResults) {
+                if (input.val().length > 0 && !$scope.showResults) {
                     $scope.$apply(function() {
-                        $scope.showQuickSearchResults = true;
+                        $scope.showResults = true;
                     });
                 }
             }
@@ -91,14 +91,14 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$re
                 if (event.which === 9) {
                     $document.off("click", onClick);
                     $scope.$apply(function() {
-                        $scope.showQuickSearchResults = false;
+                        $scope.showResults = false;
                     });
                 } else if (event.which === 13) {
-                    if ($scope.onEnterUrl) {
+                    if ($scope.searchViewUrl) {
                         $scope.$apply(function() {
-                            $location.path($scope.onEnterUrl).search("pattern=" + input.val());
+                            $location.path($scope.searchViewUrl).search("pattern=" + input.val());
                             input.val("");
-                            $scope.showQuickSearchResults = false;
+                            $scope.showResults = false;
                             $scope.listItems = undefined;
                         });
                     }
@@ -108,8 +108,8 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$re
                 input.on("focus", onFocus);
                 input.on("blur", onBlur);
                 input.on("keydown", onKeydown);
-                if ($scope.quicksearchUrl) {
-                    input.on("input", showQuickSearchResults);
+                if ($scope.resultUrl) {
+                    input.on("input", showResults);
                 }
             }
             init();
