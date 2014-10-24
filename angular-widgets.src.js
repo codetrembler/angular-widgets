@@ -14,7 +14,7 @@ angular.module("spinner.html", []).run([ "$templateCache", function($templateCac
 
 angular.module("angular-widgets",["ngResource", "templates-src"]);
 
-angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$resource", "DomService", "Utils", function($document, $resource, DomService, Utils) {
+angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$resource", "$location", "DomService", "Utils", function($document, $resource, $location, DomService, Utils) {
     "use strict";
     return {
         restrict: "E",
@@ -22,6 +22,7 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$re
         scope: {
             quicksearchUrl: "@",
             placeholder: "@",
+            onEnterUrl: "@",
             onFocus: "=",
             onBlur: "="
         },
@@ -92,6 +93,15 @@ angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$re
                     $scope.$apply(function() {
                         $scope.showQuickSearchResults = false;
                     });
+                } else if (event.which === 13) {
+                    if ($scope.onEnterUrl) {
+                        $scope.$apply(function() {
+                            $location.path($scope.onEnterUrl).search("pattern=" + input.val());
+                            input.val("");
+                            $scope.showQuickSearchResults = false;
+                            $scope.listItems = undefined;
+                        });
+                    }
                 }
             }
             function init() {

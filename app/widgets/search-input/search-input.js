@@ -1,7 +1,7 @@
 /*jslint indent: 2 */
 /*global angular, console */
 
-angular.module('angular-widgets').directive('awSearchInput', ['$document', '$resource', 'DomService', 'Utils', function ($document, $resource, DomService, Utils) {
+angular.module('angular-widgets').directive('awSearchInput', ['$document', '$resource', '$location', 'DomService', 'Utils', function ($document, $resource, $location, DomService, Utils) {
   'use strict';
 
   return {
@@ -10,6 +10,7 @@ angular.module('angular-widgets').directive('awSearchInput', ['$document', '$res
     scope: {
       quicksearchUrl: '@',
       placeholder: '@',
+      onEnterUrl: '@',
       onFocus: '=',
       onBlur: '='
     },
@@ -87,12 +88,22 @@ angular.module('angular-widgets').directive('awSearchInput', ['$document', '$res
       }
 
       function onKeydown(event) {
-        // Tab: 9
+        // Tab:    9
+        // Enter: 13
         if (event.which === 9) {
           $document.off('click', onClick);
           $scope.$apply(function () {
             $scope.showQuickSearchResults = false;
           });
+        } else if (event.which === 13) {
+          if ($scope.onEnterUrl) {
+            $scope.$apply(function () {
+              $location.path($scope.onEnterUrl).search('pattern=' + input.val());
+              input.val('');
+              $scope.showQuickSearchResults = false;
+              $scope.listItems = undefined;
+            });
+          }
         }
       }
 
