@@ -34,7 +34,12 @@ module.exports = function (config) {
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
+
+    coverageReporter: {
+      type: 'lcov',
+      dir: 'coverage/'
+    },
 
 
     // web server port
@@ -72,7 +77,8 @@ module.exports = function (config) {
     singleRun: false,
 
     preprocessors: {
-      '**/*.html': ['ng-html2js']
+      '**/*.html': ['ng-html2js'],
+      'app/**/!(spec).js': 'coverage'
     },
 
     ngHtml2JsPreprocessor: {

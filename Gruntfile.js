@@ -211,6 +211,16 @@ module.exports = function (grunt) {
           spawn: false
         }
       }
+    },
+
+    coveralls: {
+      options: {
+        debug: true,
+        coverageDir: 'coverage/',
+        dryRun: true,
+        force: true,
+        recursive: true
+      }
     }
   });
 
@@ -225,11 +235,12 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-autoprefixer');
+  grunt.loadNpmTasks('grunt-karma-coveralls');
 
   grunt.registerTask('dist', ['jslint', 'karma', 'copy:all', 'htmlmin:dist', 'html2js:dist', 'less:dist', 'autoprefixer:dist', 'uglify:dist', 'string-replace:styles', 'string-replace:dist']);
   grunt.registerTask('src', ['jslint', 'karma', 'copy:all', 'htmlmin:src', 'html2js:src', 'less:src', 'autoprefixer:src', 'uglify:src', 'string-replace:src']);
   grunt.registerTask('examples', ['less:examples', 'autoprefixer:examples']);
 
   grunt.registerTask('default', ['clean', 'dist', 'src']);
-  grunt.registerTask('travis', ['clean', 'dist', 'src']);
+  grunt.registerTask('travis', ['clean', 'dist', 'src', 'coveralls']);
 };
