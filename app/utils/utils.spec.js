@@ -5,7 +5,7 @@
  * Testing the utils
  */
 
-describe('DomService', function () {
+describe('Utils', function () {
   'use strict';
 
   var Utils;
@@ -16,11 +16,13 @@ describe('DomService', function () {
     Utils = _Utils_;
   }));
 
-  it('assert should throw Error when condition is false', function () {
-    expect(function () { Utils.assert(false, 'Error thrown'); }).toThrow(new Error('Assert failed: Error thrown'));
-  });
+  describe('assert()', function () {
+    it('should throw Error when condition is false', function () {
+      expect(function () { Utils.assert(false, 'Error thrown'); }).toThrow(new Error('Assert failed: Error thrown'));
+    });
 
-  it('assert should not throw Error when condition is true', function () {
-    expect(function () { Utils.assert(true, 'Error thrown'); }).not.toThrow(new Error('Assert failed: Error thrown'));
+    it('should not throw Error when condition is true', function () {
+      expect(function () { Utils.assert(true, 'Error thrown'); }).not.toThrow(new Error('Assert failed: Error thrown'));
+    });
   });
 });

@@ -43,7 +43,7 @@ angular.module('angular-widgets').directive('awSearchInput', ['$document', '$res
             $scope.listItems = result;
             $scope.showResults = true;
           }).catch(function () {
-            console.error("no results results loaded.");
+            console.error("no results loaded.");
             $scope.showResults = false;
           }).finally(function () {
             $element.removeClass('loading');
