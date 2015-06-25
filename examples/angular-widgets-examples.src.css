@@ -1,3 +1,7 @@
+aw-lazy-list {
+  max-height: 200px;
+}
+
 body {
   background-color: lightgray;
   font-family: Arial, Helvetica, sans-serif;

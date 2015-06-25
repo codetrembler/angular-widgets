@@ -1,3 +1,7 @@
+aw-lazy-list {
+  display: block;
+  overflow-y: auto;
+}
 aw-search-input {
   position: relative;
   display: block;

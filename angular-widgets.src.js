@@ -14,6 +14,40 @@ angular.module("spinner.html", []).run([ "$templateCache", function($templateCac
 
 angular.module("angular-widgets",["ngResource", "templates-src"]);
 
+angular.module("angular-widgets").directive("awLazyList", [ "$compile", function($compile) {
+    "use strict";
+    return {
+        restrict: "E",
+        scope: {},
+        link: function($scope, $element) {
+            var innerTemplate = $element.children(), items;
+            innerTemplate.remove();
+            function createInitialDomElements() {
+                var i, clone, scope;
+                for (i = 0; i < items.length; i += 1) {
+                    clone = innerTemplate.clone();
+                    $element.append(clone);
+                    scope = $scope.$new();
+                    scope.item = items[i];
+                    $compile(clone)(scope);
+                }
+            }
+            function init() {
+                var i;
+                items = [];
+                for (i = 0; i < 100; i += 1) {
+                    items.push({
+                        label: i,
+                        text: "Text for " + i + " element."
+                    });
+                }
+            }
+            init();
+            createInitialDomElements();
+        }
+    };
+} ]);
+
 angular.module("angular-widgets").directive("awSearchInput", [ "$document", "$resource", "$location", "DomService", "Utils", function($document, $resource, $location, DomService, Utils) {
     "use strict";
     return {

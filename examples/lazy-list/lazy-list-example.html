@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="../../angular-widgets.src.css">
+    <link rel="stylesheet" type="text/css" href="../angular-widgets-examples.src.css">
+    <title>lazy-list example</title>
+  </head>
+  <body ng-app="lazy-list-example">
+    <h1>lazy-list example</h1>
+
+    <aw-lazy-list url-item-count="itemcount" url-items="loaditems" initial-visible-items-count="20">
+      <div name="ListItem">
+        <label>{{ item.label }}</label>
+        <input />
+        <span>{{ item.text }}</span>
+      </div>
+    </aw-lazy-list>
+
+    <script src="../lib/angular.min.js"></script>
+    <script src="../lib/angular-resource.min.js"></script>
+    <script src="../lib/angular-mocks.js"></script>
+    <script src="../../angular-widgets.src.js"></script>
+
+    <script src="lazy-list-example.js"></script>
+
+  </body>
+</html>
