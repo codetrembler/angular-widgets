@@ -6,20 +6,20 @@ angular.module('lazy-list-example', ['angular-widgets', 'ngResource', 'ngMockE2E
 
   var itemsCount = 500;
 
-  $httpBackend.whenGET(/item-count/).respond(function (method, url) {
+  $httpBackend.whenGET(/itemcount/).respond(function (method, url) {
     return [200, itemsCount, {}];
   });
 
-  $httpBackend.whenGET(/load-items/).respond(function (method, url) {
+  $httpBackend.whenGET(/loaditems/).respond(function (method, url, dataStr) {
     var i,
-      ret = [];
+      items = [],
+      data = JSON.parse(dataStr);
 
-    for (i = 0; i < itemsCount; i += 1) {
-      ret.push({
-        label: i,
-        text: "Text" + i
-      });
+    console.log(data);
+    for (i = data.offset; i < data.count; i += 1) {
+      items.push({ label: i, text: 'Text for ' + i + ' element.'});
     }
-    return [200, ret, {}];
+    console.log(items);
+    return [200, items, {}];
   });
 });

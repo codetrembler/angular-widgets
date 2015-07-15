@@ -9,7 +9,7 @@
   <body ng-app="lazy-list-example">
     <h1>lazy-list example</h1>
 
-    <aw-lazy-list url-item-count="itemcount" url-items="loaditems" initial-visible-items-count="20">
+    <aw-lazy-list url-item-count="itemcount" url-items="loaditems">
       <div name="ListItem">
         <label>{{ item.label }}</label>
         <input />
@@ -17,7 +17,7 @@
       </div>
     </aw-lazy-list>
 
-    <script src="../lib/angular.min.js"></script>
+    <script src="../lib/angular.js"></script>
     <script src="../lib/angular-resource.min.js"></script>
     <script src="../lib/angular-mocks.js"></script>
     <script src="../../angular-widgets.src.js"></script>
