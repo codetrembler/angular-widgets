@@ -1,5 +1,5 @@
 /*jslint indent: 2 */
-/*global angular, console */
+/*global angular */
 
 angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', function ($compile, $http) {
   'use strict';
@@ -24,8 +24,9 @@ angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', 
         domElementHeight,
         lastScrollTop = 0,
         indexTopItem = 0,
-        indexBottomItem = 499, // TODO: load by itemCount
+        indexBottomItem = domElementsCount - 1,
         topElementIndexToStartElementSwapping = 0;
+
       itemTemplate.remove();
       itemTemplate.addClass('item');
       $element.append(itemContainerDiv);
@@ -64,8 +65,8 @@ angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', 
             }
             // set container div height with first element's height
             domElementHeight = compiledDomElements[0][0].offsetHeight;
-            containerHeight = (domElementHeight * itemCount) + 'px';
-            itemContainerDiv[0].style.minHeight = containerHeight;
+            containerHeight = (domElementHeight * itemCount);
+            itemContainerDiv[0].style.minHeight = containerHeight + 'px';
             topElementIndexToStartElementSwapping = (domElementHeight * domElementsCount - $element[0].offsetHeight) / 2;
           });
         });
@@ -87,7 +88,10 @@ angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', 
               }
               compiledDomElements[indexTopItem % domElementsCount].css('top', (parseInt(compiledDomElements[indexBottomItem % domElementsCount].css('top'), 10) + domElementHeight) + 'px');
               domElementScopes[indexTopItem % domElementsCount].item = items[indexBottomItem + 1];
+
               indexTopItem += 1;
+              indexBottomItem += 1;
+
             }
             $scope.$apply();
           }
@@ -97,7 +101,6 @@ angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', 
       }
 
       function onScrollUp() {
-        // TODO: läuft nicht
         var scrollTop = $element[0].scrollTop,
           scrolledItemsCount,
           i;
@@ -105,15 +108,19 @@ angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', 
         if (lastScrollTop - scrollTop > domElementHeight) {
           scrolledItemsCount = Math.floor((lastScrollTop - scrollTop) / domElementHeight);
 
-          if (scrollTop < topElementIndexToStartElementSwapping) {
+          if (scrollTop < containerHeight - topElementIndexToStartElementSwapping) {
             for (i = 0; i < scrolledItemsCount; i += 1) {
               indexTopItem = (indexBottomItem + 1 - domElementsCount);
               if (indexTopItem === 0) {
                 break;
               }
               compiledDomElements[indexBottomItem % domElementsCount].css('top', (parseInt(compiledDomElements[indexTopItem % domElementsCount].css('top'), 10) - domElementHeight) + 'px');
+
               domElementScopes[indexBottomItem % domElementsCount].item = items[indexTopItem - 1];
+
               indexTopItem -= 1;
+              indexBottomItem -= 1;
+
             }
             $scope.$apply();
           }
