@@ -15,17 +15,17 @@ angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', 
       var itemTemplate = $element.children(),
         itemContainerDiv = angular.element('<div class="item-container"></div>'),
         items,
-        compiledDomElements,
-        domElementScopes,
         itemCount,
-        loadBlockCount = 500,
+        domElements,
+        domElementScopes,
         domElementsCount = 100,
+        loadBlockCount = 500,
         containerHeight = 0,
-        domElementHeight,
+        domElementHeight = 0,
         lastScrollTop = 0,
         indexTopItem = 0,
         indexBottomItem = domElementsCount - 1,
-        topElementIndexToStartElementSwapping = 0;
+        elementTopPixelsToStartElementSwapping = 0;
 
       itemTemplate.remove();
       itemTemplate.addClass('item');
@@ -33,15 +33,15 @@ angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', 
 
       function createInitialDomElements() {
         var i, clone, scope;
-        compiledDomElements = [];
+        domElements = [];
         domElementScopes = [];
 
         for (i = 0; i < domElementsCount; i += 1) {
           clone = itemTemplate.clone();
           itemContainerDiv.append(clone);
           scope = $scope.$new();
-          compiledDomElements.push($compile(clone)(scope));
-          compiledDomElements[i].css('top', (compiledDomElements[0][0].offsetHeight * i) + 'px');
+          domElements.push($compile(clone)(scope));
+          domElements[i].css('top', (domElements[0][0].offsetHeight * i) + 'px');
           domElementScopes.push(scope);
         }
       }
@@ -64,10 +64,10 @@ angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', 
               domElementScopes[i].item = items[i];
             }
             // set container div height with first element's height
-            domElementHeight = compiledDomElements[0][0].offsetHeight;
+            domElementHeight = domElements[0][0].offsetHeight;
             containerHeight = (domElementHeight * itemCount);
             itemContainerDiv[0].style.minHeight = containerHeight + 'px';
-            topElementIndexToStartElementSwapping = (domElementHeight * domElementsCount - $element[0].offsetHeight) / 2;
+            elementTopPixelsToStartElementSwapping = (domElementHeight * domElementsCount - $element[0].offsetHeight) / 2;
           });
         });
       }
@@ -80,13 +80,13 @@ angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', 
         if (scrollTop - lastScrollTop > domElementHeight) {
           scrolledItemsCount = Math.floor((scrollTop - lastScrollTop) / domElementHeight);
 
-          if (scrollTop > topElementIndexToStartElementSwapping) {
+          if (scrollTop > elementTopPixelsToStartElementSwapping) {
             for (i = 0; i < scrolledItemsCount; i += 1) {
               indexBottomItem = (indexTopItem - 1 + domElementsCount);
               if (indexBottomItem === itemCount - 1) {
                 break;
               }
-              compiledDomElements[indexTopItem % domElementsCount].css('top', (parseInt(compiledDomElements[indexBottomItem % domElementsCount].css('top'), 10) + domElementHeight) + 'px');
+              domElements[indexTopItem % domElementsCount].css('top', (parseInt(domElements[indexBottomItem % domElementsCount].css('top'), 10) + domElementHeight) + 'px');
               domElementScopes[indexTopItem % domElementsCount].item = items[indexBottomItem + 1];
 
               indexTopItem += 1;
@@ -108,19 +108,17 @@ angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', 
         if (lastScrollTop - scrollTop > domElementHeight) {
           scrolledItemsCount = Math.floor((lastScrollTop - scrollTop) / domElementHeight);
 
-          if (scrollTop < containerHeight - topElementIndexToStartElementSwapping) {
+          if (scrollTop < containerHeight - elementTopPixelsToStartElementSwapping) {
             for (i = 0; i < scrolledItemsCount; i += 1) {
               indexTopItem = (indexBottomItem + 1 - domElementsCount);
               if (indexTopItem === 0) {
                 break;
               }
-              compiledDomElements[indexBottomItem % domElementsCount].css('top', (parseInt(compiledDomElements[indexTopItem % domElementsCount].css('top'), 10) - domElementHeight) + 'px');
-
+              domElements[indexBottomItem % domElementsCount].css('top', (parseInt(domElements[indexTopItem % domElementsCount].css('top'), 10) - domElementHeight) + 'px');
               domElementScopes[indexBottomItem % domElementsCount].item = items[indexTopItem - 1];
 
               indexTopItem -= 1;
               indexBottomItem -= 1;
-
             }
             $scope.$apply();
           }
