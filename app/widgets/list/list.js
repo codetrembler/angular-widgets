@@ -7,19 +7,22 @@ angular.module('angular-widgets').directive('awList', ['$compile', '$http', func
   return {
     restrict: 'E',
     scope: {
+      items: '=',
       urlItemCount: '@',
       urlItems: '@'
     },
     link: function ($scope, $element) {
-      // save innerHTML for later use
-      var itemTemplate = $element.children(),
+      var itemTemplate = $element.children(), // save innerHTML for later use
         itemContainerDiv = angular.element('<div class="item-container"></div>'),
+        isLoadItemsOnScroll = $scope.items === undefined,
         items,
         itemCount,
         domElements,
         domElementScopes,
         domElementsCount = 100,
-        loadBlockCount = 500,
+        lazyLoadBlockCount = 5,
+        lazyLoadBlockItemCount = 40, // Constraint: lazyLoadBlockCount * lazyLoadBlockItemCount >= 2 * domElementsCount
+        lazyLoadFirstLoadedBlock = 0,
         containerHeight = 0,
         domElementHeight = 0,
         lastScrollTop = 0,
@@ -46,33 +49,65 @@ angular.module('angular-widgets').directive('awList', ['$compile', '$http', func
         }
       }
 
-      function init() {
-        createInitialDomElements();
-        $http.get('/' + $scope.urlItemCount).success(function (loadedItemCount) {
-          itemCount = loadedItemCount;
-          items = [];
-          items[itemCount - 1] = undefined;
+      function initializeDomElements() {
+        var i,
+          count = Math.min(domElementsCount, items.length);
 
-          $http.get('/' + $scope.urlItems, { data: { offset: 0, count: loadBlockCount }}).success(function (loadedItems) {
-            var i,
-              args = [0, loadBlockCount].concat(loadedItems),
-              count = Math.min(loadBlockCount, domElementsCount);
-
-            Array.prototype.splice.apply(items, args);
-
-            for (i = 0; i < count; i += 1) {
-              domElementScopes[i].item = items[i];
-            }
-            // set container div height with first element's height
-            domElementHeight = domElements[0][0].offsetHeight;
-            containerHeight = (domElementHeight * itemCount);
-            itemContainerDiv[0].style.minHeight = containerHeight + 'px';
-            elementTopPixelsToStartElementSwapping = (domElementHeight * domElementsCount - $element[0].offsetHeight) / 2;
-          });
-        });
+        for (i = 0; i < count; i += 1) {
+          domElementScopes[i].item = items[i];
+        }
+        // set container div height with first element's height
+        domElementHeight = domElements[0][0].offsetHeight;
+        containerHeight = (domElementHeight * itemCount);
+        itemContainerDiv[0].style.minHeight = containerHeight + 'px';
+        elementTopPixelsToStartElementSwapping = (domElementHeight * domElementsCount - $element[0].offsetHeight) / 2;
       }
 
-      function onScrollDown() {
+      function init() {
+        createInitialDomElements();
+        if (!isLoadItemsOnScroll) {
+          items = $scope.items;
+          itemCount = items.length;
+          initializeDomElements();
+        } else {
+          $http.get('/' + $scope.urlItemCount).success(function (loadedItemCount) {
+            itemCount = loadedItemCount;
+            items = [];
+            items[itemCount - 1] = undefined;
+
+            $http.get('/' + $scope.urlItems, { data: { offset: 0, count: lazyLoadBlockCount * lazyLoadBlockItemCount }}).success(function (loadedItems) {
+              var args = [0, lazyLoadBlockItemCount].concat(loadedItems);
+
+              Array.prototype.splice.apply(items, args);
+
+              initializeDomElements();
+            });
+          });
+        }
+      }
+
+      function loadItemsOnScrollDown() {
+        var topItemIndex,
+          lastItemIndexOfMiddleBlock,
+          offset;
+
+        if (isLoadItemsOnScroll) {
+          topItemIndex = $element[0].scrollTop / domElementHeight;
+          lastItemIndexOfMiddleBlock = Math.ceil(lazyLoadBlockCount / 2 + lazyLoadFirstLoadedBlock) * lazyLoadBlockItemCount - 1;
+
+          if (topItemIndex > lastItemIndexOfMiddleBlock) {
+            offset = (lazyLoadFirstLoadedBlock + lazyLoadBlockCount) * lazyLoadBlockItemCount;
+            $http.get('/' + $scope.urlItems, { data: { offset: offset, count: lazyLoadBlockItemCount }}).success(function (loadedItems) {
+              var args = [offset, lazyLoadBlockItemCount].concat(loadedItems);
+              lazyLoadFirstLoadedBlock += 1;
+
+              Array.prototype.splice.apply(items, args);
+            });
+          }
+        }
+      }
+
+      function updateDomElementsOnScrollDown() {
         var scrollTop = $element[0].scrollTop,
           scrolledItemsCount,
           i;
@@ -91,7 +126,6 @@ angular.module('angular-widgets').directive('awList', ['$compile', '$http', func
 
               indexTopItem += 1;
               indexBottomItem += 1;
-
             }
             $scope.$apply();
           }
@@ -100,7 +134,7 @@ angular.module('angular-widgets').directive('awList', ['$compile', '$http', func
         }
       }
 
-      function onScrollUp() {
+      function updateDomElementsOnScrollUp() {
         var scrollTop = $element[0].scrollTop,
           scrolledItemsCount,
           i;
@@ -129,11 +163,13 @@ angular.module('angular-widgets').directive('awList', ['$compile', '$http', func
 
       function onScroll() {
         if ($element[0].scrollTop > lastScrollTop) {
-          onScrollDown();
+          loadItemsOnScrollDown();
+          updateDomElementsOnScrollDown();
         } else {
-          onScrollUp();
+          updateDomElementsOnScrollUp();
         }
       }
+
       $element.on('scroll', onScroll);
       init();
     }

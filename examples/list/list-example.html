@@ -6,9 +6,19 @@
     <link rel="stylesheet" type="text/css" href="../angular-widgets-examples.src.css">
     <title>list example</title>
   </head>
-  <body ng-app="list-example">
+  <body ng-app="list-example" ng-controller="listController">
     <h1>list example</h1>
 
+    <h2>list with given array</h2>
+    <aw-list items="items">
+      <div name="ListItem">
+        <label>{{ item.label }}</label>
+        <input />
+        <span>{{ item.text }}</span>
+      </div>
+    </aw-list>
+
+    <h2>list with loading items on the fly</h2>
     <aw-list url-item-count="itemcount" url-items="loaditems">
       <div name="ListItem">
         <label>{{ item.label }}</label>
