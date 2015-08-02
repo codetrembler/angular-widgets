@@ -14,7 +14,7 @@ angular.module("spinner.html", []).run([ "$templateCache", function($templateCac
 
 angular.module("angular-widgets",["ngResource", "templates-src"]);
 
-angular.module("angular-widgets").directive("awLazyList", [ "$compile", "$http", function($compile, $http) {
+angular.module("angular-widgets").directive("awList", [ "$compile", "$http", function($compile, $http) {
     "use strict";
     return {
         restrict: "E",

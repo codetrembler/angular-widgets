@@ -1,7 +1,7 @@
 /*jslint indent: 2 */
 /*global angular */
 
-angular.module('angular-widgets').directive('awLazyList', ['$compile', '$http', function ($compile, $http) {
+angular.module('angular-widgets').directive('awList', ['$compile', '$http', function ($compile, $http) {
   'use strict';
 
   return {
