@@ -24,7 +24,7 @@ angular.module("angular-widgets").directive("awList", [ "$compile", "$http", fun
             urlItems: "@"
         },
         link: function($scope, $element) {
-            var itemTemplate = $element.children(), itemContainerDiv = angular.element('<div class="item-container"></div>'), isLoadItemsOnScroll = $scope.items === undefined, items, itemCount, domElements, domElementScopes, domElementsCount = 100, lazyLoadBlockCount = 5, lazyLoadBlockItemCount = 40, lazyLoadFirstLoadedBlock = 0, containerHeight = 0, domElementHeight = 0, lastScrollTop = 0, indexTopItem = 0, indexBottomItem = domElementsCount - 1, elementTopPixelsToStartElementSwapping = 0;
+            var itemTemplate = $element.children(), itemContainerDiv = angular.element('<div class="item-container"></div>'), isLoadItemsOnScroll = $scope.urlItems !== undefined, items, itemCount, domElements, domElementScopes, domElementsCount = 100, lazyLoadBlockCount = 5, lazyLoadBlockItemCount = 40, lazyLoadFirstLoadedBlock = 0, containerHeight = 0, domElementHeight = 0, lastScrollTop = 0, indexTopItem = 0, indexBottomItem = domElementsCount - 1, elementTopPixelsToStartElementSwapping = 0;
             itemTemplate.remove();
             itemTemplate.addClass("item");
             $element.append(itemContainerDiv);
@@ -51,12 +51,17 @@ angular.module("angular-widgets").directive("awList", [ "$compile", "$http", fun
                 itemContainerDiv[0].style.minHeight = containerHeight + "px";
                 elementTopPixelsToStartElementSwapping = (domElementHeight * domElementsCount - $element[0].offsetHeight) / 2;
             }
+            function initItems() {
+                items = $scope.items;
+                if (items) {
+                    itemCount = items.length;
+                    initializeDomElements();
+                }
+            }
             function init() {
                 createInitialDomElements();
                 if (!isLoadItemsOnScroll) {
-                    items = $scope.items;
-                    itemCount = items.length;
-                    initializeDomElements();
+                    initItems();
                 } else {
                     $http.get("/" + $scope.urlItemCount).success(function(loadedItemCount) {
                         itemCount = loadedItemCount;
@@ -143,6 +148,11 @@ angular.module("angular-widgets").directive("awList", [ "$compile", "$http", fun
                     updateDomElementsOnScrollUp();
                 }
             }
+            $scope.$watch("items", function() {
+                if (!isLoadItemsOnScroll) {
+                    initItems();
+                }
+            });
             $element.on("scroll", onScroll);
             init();
         }

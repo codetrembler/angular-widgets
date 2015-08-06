@@ -14,7 +14,7 @@ angular.module('angular-widgets').directive('awList', ['$compile', '$http', func
     link: function ($scope, $element) {
       var itemTemplate = $element.children(), // save innerHTML for later use
         itemContainerDiv = angular.element('<div class="item-container"></div>'),
-        isLoadItemsOnScroll = $scope.items === undefined,
+        isLoadItemsOnScroll = $scope.urlItems !== undefined,
         items,
         itemCount,
         domElements,
@@ -63,12 +63,18 @@ angular.module('angular-widgets').directive('awList', ['$compile', '$http', func
         elementTopPixelsToStartElementSwapping = (domElementHeight * domElementsCount - $element[0].offsetHeight) / 2;
       }
 
+      function initItems() {
+        items = $scope.items;
+        if (items) {
+          itemCount = items.length;
+          initializeDomElements();
+        }
+      }
+
       function init() {
         createInitialDomElements();
         if (!isLoadItemsOnScroll) {
-          items = $scope.items;
-          itemCount = items.length;
-          initializeDomElements();
+          initItems();
         } else {
           $http.get('/' + $scope.urlItemCount).success(function (loadedItemCount) {
             itemCount = loadedItemCount;
@@ -169,6 +175,12 @@ angular.module('angular-widgets').directive('awList', ['$compile', '$http', func
           updateDomElementsOnScrollUp();
         }
       }
+
+      $scope.$watch('items', function () {
+        if (!isLoadItemsOnScroll) {
+          initItems();
+        }
+      });
 
       $element.on('scroll', onScroll);
       init();
