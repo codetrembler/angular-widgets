@@ -29,6 +29,7 @@ If you want to debug the code, you can include the non-uglified versions angular
 
 ##The widgets
 Currently the following widgets are implemented:
+
 1. [List](https://github.com/pchorus/angular-widgets/tree/master/app/widgets/list)
 2. search-input
 3. spinner-dots
