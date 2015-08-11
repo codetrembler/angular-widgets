@@ -4,7 +4,7 @@ List
 Angular directive for lists. A number of list items are rendered into the dom and are reused while scrolling through the list.
 
 Example:
-```
+```html
 <aw-list items="items">
   <div name="ListItem">
     <label>{{ item.label }}</label>

@@ -10,7 +10,7 @@ bower install angular-widgets
 ```
 
 Include the JavaScript source code and the CSS-Styles in your index.html
-```
+```html
 <html>
   <head>
     ...
