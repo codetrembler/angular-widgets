@@ -1,12 +1,16 @@
 {
   "name": "angular-widgets",
   "version": "0.1.0",
+  "description": "ui widgets implemented as angular directives",
   "repository": {
     "type": "git",
     "url": "git://github.com/pchorus/angular-widgets.git"
   },
   "dependencies": {},
   "devDependencies": {
+    "angular": "^1.5.8",
+    "angular-mocks": "^1.5.8",
+    "angular-resource": "^1.5.8",
     "grunt": "^1.0.1",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-contrib-clean": "^1.0.0",
@@ -28,9 +32,16 @@
     "karma-jasmine": "^1.0.2",
     "karma-ng-html2js-preprocessor": "^1.0.0",
     "karma-phantomjs-launcher": "^1.0.2",
-    "karma-script-launcher": "^1.0.0"
+    "karma-script-launcher": "^1.0.0",
+    "less": "^2.7.1"
   },
   "scripts": {
     "test": "grunt travis --verbose"
-  }
+  },
+  "files": [
+    "angular-widgets.src.js",
+    "angular-widgets.src.css",
+    "angular-widgets.min.js",
+    "angular-widgets.min.css"
+  ]
 }
