@@ -1,6 +1,6 @@
 {
   "name": "angular-widgets",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ui widgets implemented as angular directives",
   "repository": {
     "type": "git",
